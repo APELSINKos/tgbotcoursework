@@ -1,0 +1,20 @@
+# Secrets - never commit
+.env
+
+# Local database and logs
+bot.db
+*.log
+
+# Python
+venv/
+__pycache__/
+*.pyc
+
+# Editor and tool folders
+.vscode/
+.idea/
+
+# Course materials lying in the project root (not part of the project)
+/*.pdf
+/*.docx
+/work
