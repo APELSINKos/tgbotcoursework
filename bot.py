@@ -7,6 +7,7 @@ from loader import bot
 # Importing a module registers its handlers in the bot
 import weather
 import settings
+import currency
 
 WELCOME_TEXT = (
     "👋 Привет! Я твой личный помощник.\n\n"
