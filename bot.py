@@ -4,6 +4,10 @@ import database
 import keyboards
 from loader import bot
 
+# Importing a module registers its handlers in the bot
+import weather
+import settings
+
 WELCOME_TEXT = (
     "👋 Привет! Я твой личный помощник.\n\n"
     "🌤 Погода — прогноз с полезными советами\n"
@@ -22,6 +26,13 @@ def send_welcome(message):
     """Greet the user and show the main menu."""
     database.add_user(message.from_user.id)
     bot.send_message(message.chat.id, WELCOME_TEXT, reply_markup=keyboards.main_menu())
+
+
+@bot.message_handler(content_types=["text", "photo", "sticker", "voice", "document"])
+def unknown_message(message):
+    """Anything the other handlers did not recognise comes here."""
+    bot.send_message(message.chat.id, "🤔 Не понял. Выбери раздел в меню ниже 👇",
+                     reply_markup=keyboards.main_menu())
 
 
 if __name__ == "__main__":
