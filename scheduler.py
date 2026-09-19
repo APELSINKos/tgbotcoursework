@@ -20,7 +20,7 @@ def send_due_reminders():
             if remind_at > now_text:
                 continue
             try:
-                bot.send_message(user_id, f"⏰ Напоминание: {text}")
+                bot.send_message(user_id, f"⏰ Напоминаие: {text}")
             except ApiTelegramException as error:
                 # For example the user blocked the bot - do not retry forever
                 print("Could not deliver a reminder:", error)

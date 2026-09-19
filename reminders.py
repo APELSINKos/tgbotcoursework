@@ -1,6 +1,6 @@
 """Reminders: the bot writes to the user at the chosen time."""
 
-from datetime import datetime, timedelta
+from datetime import datetime
 
 import config
 import database
@@ -17,12 +17,9 @@ def parse_remind_time(text, now):
     """Turn the user's text into a datetime. Returns None if the format is wrong."""
     parts = text.strip().split()
     try:
-        if len(parts) == 1:  # "18:30" - today or tomorrow
+        if len(parts) == 1:  # "18:30" - today
             clock = datetime.strptime(parts[0], "%H:%M")
-            moment = now.replace(hour=clock.hour, minute=clock.minute, second=0, microsecond=0)
-            if moment <= now:
-                moment += timedelta(days=1)
-            return moment
+            return now.replace(hour=clock.hour, minute=clock.minute, second=0, microsecond=0)
         if len(parts) == 2:  # "25.09 18:30" or "25.09.2027 18:30"
             day = parts[0]
             if day.count(".") == 1:
@@ -120,7 +117,7 @@ def delete_reminder(message):
     if keyboards.is_cancel(message):
         bot.send_message(message.chat.id, "Отменено.", reply_markup=keyboards.main_menu())
         return
-    reminders = database.get_reminders(message.from_user.id)
+    reminders = sorted(database.get_reminders(message.from_user.id))
     text = (message.text or "").strip()
     if not text.isdigit() or not (1 <= int(text) <= len(reminders)):
         answer = bot.send_message(message.chat.id,

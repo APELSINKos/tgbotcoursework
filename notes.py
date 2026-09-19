@@ -41,7 +41,7 @@ def save_note(message):
         bot.send_message(message.chat.id, "Отменено.", reply_markup=keyboards.main_menu())
         return
     text = (message.text or "").strip()
-    if not text or len(text) > config.MAX_NOTE_LENGTH:
+    if not text or len(text) >= config.MAX_NOTE_LENGTH:
         answer = bot.send_message(
             message.chat.id,
             f"Заметка — это текст от 1 до {config.MAX_NOTE_LENGTH} символов. Попробуй ещё раз:")

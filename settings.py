@@ -26,7 +26,7 @@ def settings_view(user_id):
             f"🏙 Город: {user['city']}\n"
             f"🌅 Утренняя сводка: {state}\n"
             f"🕗 Время сводки: {user['morning_time']}")
-    toggle = "🔕 Выключить сводку" if user["morning_enabled"] else "🔔 Включить сводку"
+    toggle = "🔔 Включить сводку" if user["morning_enabled"] else "🔕 Выключить сводку"
     buttons = keyboards.inline([("🏙 Сменить город", "settings_city"),
                                 ("🕗 Время сводки", "settings_time"),
                                 (toggle, "settings_toggle")])
@@ -63,7 +63,7 @@ def save_city(message):
     if keyboards.is_cancel(message):
         bot.send_message(message.chat.id, "Отменено.", reply_markup=keyboards.main_menu())
         return
-    name = (message.text or "").strip()
+    name = message.text.strip()
     if not name or len(name) > 50:
         answer = bot.send_message(message.chat.id,
                                   "Название города — текст до 50 символов. Попробуй ещё раз:")

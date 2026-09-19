@@ -48,7 +48,7 @@ def parse_amount(text):
         amount = float(text.replace(" ", "").replace(",", "."))
     except ValueError:
         return None
-    if not (0 < amount <= MAX_AMOUNT):
+    if amount > MAX_AMOUNT:
         return None
     return amount
 
