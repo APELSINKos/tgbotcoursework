@@ -1,0 +1,24 @@
+# systemd unit: keeps the bot running and restarts it after a crash or a reboot
+[Unit]
+Description=Telegram bot "Personal assistant"
+After=network-online.target
+Wants=network-online.target
+
+[Service]
+User=tgbot
+Group=tgbot
+WorkingDirectory=/opt/tgbot/app
+ExecStart=/opt/tgbot/venv/bin/python bot.py
+Environment=PYTHONUNBUFFERED=1
+Restart=always
+RestartSec=5
+
+# The bot may write only to its own folder (database file)
+NoNewPrivileges=true
+PrivateTmp=true
+ProtectSystem=strict
+ProtectHome=true
+ReadWritePaths=/opt/tgbot/app
+
+[Install]
+WantedBy=multi-user.target
