@@ -11,6 +11,7 @@ import currency
 import notes
 import reminders
 import habits
+import my_day
 import scheduler
 
 WELCOME_TEXT = (
