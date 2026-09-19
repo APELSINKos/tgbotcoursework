@@ -19,3 +19,7 @@ __pycache__/
 /*.docx
 /work
 /photo_*
+
+# Private keys - never commit
+*.pem
+*.key
