@@ -1,6 +1,8 @@
 """All work with the SQLite database is collected in this file."""
 
 import sqlite3
+from datetime import datetime
+from zoneinfo import ZoneInfo
 
 import config
 
@@ -76,3 +78,27 @@ def set_morning_enabled(user_id, enabled):
 
 def set_last_morning_date(user_id, day):
     run("UPDATE users SET last_morning_date = ? WHERE user_id = ?", (day, user_id))
+
+
+def user_now(user_id):
+    """Current date and time in the timezone of the user's city."""
+    timezone = get_user(user_id)["timezone"]
+    return datetime.now(ZoneInfo(timezone)).replace(tzinfo=None)
+
+
+# ---------- notes ----------
+
+def add_note(user_id, text):
+    created_at = user_now(user_id).strftime("%Y-%m-%d %H:%M")
+    run("INSERT INTO notes (user_id, text, created_at) VALUES (?, ?, ?)",
+        (user_id, text, created_at))
+
+
+def get_notes(user_id):
+    """Return a list of (id, text, created_at), the oldest note first."""
+    return run("SELECT id, text, created_at FROM notes WHERE user_id = ? ORDER BY id",
+               (user_id,), fetch=True)
+
+
+def delete_note(note_id):
+    run("DELETE FROM notes WHERE id = ?", (note_id,))

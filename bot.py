@@ -8,6 +8,7 @@ from loader import bot
 import weather
 import settings
 import currency
+import notes
 
 WELCOME_TEXT = (
     "👋 Привет! Я твой личный помощник.\n\n"
