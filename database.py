@@ -124,3 +124,34 @@ def delete_reminder(reminder_id):
 
 def mark_reminder_sent(reminder_id):
     run("UPDATE reminders SET sent = 1 WHERE id = ?", (reminder_id,))
+
+
+# ---------- habits ----------
+
+def add_habit(user_id, name):
+    created_at = user_now(user_id).strftime("%Y-%m-%d")
+    run("INSERT INTO habits (user_id, name, created_at) VALUES (?, ?, ?)",
+        (user_id, name, created_at))
+
+
+def get_habits(user_id):
+    """Return a list of (id, name, created_at)."""
+    return run("SELECT id, name, created_at FROM habits WHERE user_id = ? ORDER BY id",
+               (user_id,), fetch=True)
+
+
+def delete_habit(habit_id):
+    run("DELETE FROM habit_marks WHERE habit_id = ?", (habit_id,))
+    run("DELETE FROM habits WHERE id = ?", (habit_id,))
+
+
+def set_habit_mark(habit_id, day, done):
+    """Save the mark for one day: done is 1 (completed) or 0 (skipped)."""
+    run("INSERT OR REPLACE INTO habit_marks (habit_id, day, done) VALUES (?, ?, ?)",
+        (habit_id, day, done))
+
+
+def get_habit_marks(habit_id):
+    """Return a dictionary {'2026-09-19': 1, '2026-09-18': 0, ...}."""
+    rows = run("SELECT day, done FROM habit_marks WHERE habit_id = ?", (habit_id,), fetch=True)
+    return {day: done for day, done in rows}

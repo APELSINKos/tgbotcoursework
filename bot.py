@@ -10,6 +10,7 @@ import settings
 import currency
 import notes
 import reminders
+import habits
 import scheduler
 
 WELCOME_TEXT = (
