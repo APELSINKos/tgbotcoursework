@@ -9,6 +9,8 @@ import weather
 import settings
 import currency
 import notes
+import reminders
+import scheduler
 
 WELCOME_TEXT = (
     "👋 Привет! Я твой личный помощник.\n\n"
@@ -39,5 +41,6 @@ def unknown_message(message):
 
 if __name__ == "__main__":
     database.init_db()
+    scheduler.start()
     print("Bot is running. Press Ctrl+C to stop.")
     bot.infinity_polling()

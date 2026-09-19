@@ -102,3 +102,25 @@ def get_notes(user_id):
 
 def delete_note(note_id):
     run("DELETE FROM notes WHERE id = ?", (note_id,))
+
+
+# ---------- reminders ----------
+
+def add_reminder(user_id, text, remind_at):
+    """remind_at is a string 'YYYY-MM-DD HH:MM' in the user's local time."""
+    run("INSERT INTO reminders (user_id, text, remind_at) VALUES (?, ?, ?)",
+        (user_id, text, remind_at))
+
+
+def get_reminders(user_id):
+    """Reminders that were not sent yet: (id, text, remind_at), the nearest first."""
+    return run("SELECT id, text, remind_at FROM reminders "
+               "WHERE user_id = ? AND sent = 0 ORDER BY remind_at", (user_id,), fetch=True)
+
+
+def delete_reminder(reminder_id):
+    run("DELETE FROM reminders WHERE id = ?", (reminder_id,))
+
+
+def mark_reminder_sent(reminder_id):
+    run("UPDATE reminders SET sent = 1 WHERE id = ?", (reminder_id,))
